@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker build -t toolchain .
+container=$(docker run -d --rm toolchain sleep 3000)
+docker export $container > squashed/rootfs.tar
+docker stop $container
+
+docker build -t $IMAGE_NAME --no-cache ./squashed
