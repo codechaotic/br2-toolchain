@@ -1,4 +1,2 @@
-dl/
-output/
-*.log
+out/
 rootfs.tar
