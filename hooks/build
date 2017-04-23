@@ -3,6 +3,10 @@
 set -e
 set -o pipefail
 
+docker images
+docker ps -a
+
+df -h
 docker build -t toolchain .
 container=$(docker run -d --rm toolchain sleep 3000)
 docker export $container > output/rootfs.tar
