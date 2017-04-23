@@ -3,8 +3,8 @@
 set -e
 set -o pipefail
 
-image=$(docker build . | tee /dev/tty)
-container=$(docker run -d --rm $image sleep 3000)
+docker build -t toolchain .
+container=$(docker run -d --rm toolchain sleep 3000)
 docker export $container > output/rootfs.tar
 docker stop $container
 

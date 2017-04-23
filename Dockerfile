@@ -14,7 +14,7 @@ ADD build .
 ADD src src
 ADD buildroot buildroot
 
-RUN make PROJECT=toolchain BUILDROOT=/build/buildroot BR2_EXTERNAL=/build/src
+RUN make -j 1 PROJECT=toolchain BUILDROOT=/build/buildroot BR2_EXTERNAL=/build/src
 
 RUN mv out/toolchain/host/usr toolchain
 RUN rm -Rf out src buildroot
