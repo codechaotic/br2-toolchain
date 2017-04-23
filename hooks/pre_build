@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+docker build -t base .
+docker run --rm -a stdout \
+  -v $(pwd)/buildroot:/build/buildroot \
+  -v $(pwd)/src:/build/src \
+  -v $(pwd)/output:/build/output \
+  -v $(pwd)/cache:/build/cache \
+  -v $(pwd)/dl:/build/dl \
+  base make PROJECT=toolchain

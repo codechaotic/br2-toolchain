@@ -1,4 +1,5 @@
 output/*
 !output/Dockerfile
+!output/.dockerignore
 dl/
 cache/
