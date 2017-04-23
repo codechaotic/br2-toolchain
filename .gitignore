@@ -1,2 +1,4 @@
-out/
-rootfs.tar
+output/*
+!output/Dockerfile
+dl/
+cache/

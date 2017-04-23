@@ -1,15 +1,14 @@
 #!/bin/bash
 
 set -e
-set -o pipefail
 
-docker images
-docker ps -a
-
-df -h
-docker build -t toolchain .
-container=$(docker run -d --rm toolchain sleep 3000)
-docker export $container > output/rootfs.tar
-docker stop $container
+docker build -t builder .
+docker run --rm -a stdout \
+  -v $(pwd)/buildroot:/build/buildroot \
+  -v $(pwd)/src:/build/src \
+  -v $(pwd)/output:/build/output \
+  -v $(pwd)/cache:/build/cache \
+  -v $(pwd)/dl:/build/dl \
+  builder make PROJECT=toolchain
 
 docker build -t $IMAGE_NAME --no-cache ./output

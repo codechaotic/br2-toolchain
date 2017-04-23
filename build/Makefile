@@ -1,7 +1,7 @@
 -include $(SRCDIR)/project/$(PROJECT)/Makefile
 
 SRCDIR := $(CURDIR)/src
-OUTDIR := $(CURDIR)/out
+OUTDIR := $(CURDIR)/output
 #location of the buildroot sources
 MAKEARGS := -C $(BUILDROOT)
 #location to store build files

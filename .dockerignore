@@ -1,4 +1,7 @@
 dl/
 output/
-squashed/
-out/
+cache/
+buildroot/
+hooks/
+src/
+output/

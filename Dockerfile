@@ -10,17 +10,11 @@ RUN apt-get update && apt-get install -y \
     rsync \
     build-essential
 
+RUN echo "export BR2_CCACHE_DIR=/build/cache" >> /root/.bashrc \
+ && echo "export BR2_DL_DIR=/build/dl" >> /root/.bashrc \
+ && echo "export BR2_EXTERNAL=/build/src" >> /root/.bashrc \
+ && echo "export BUILDROOT=/build/buildroot" >> /root/.bashrc \
+ && echo "export TOOLCHAIN=/build/toolchain" >> /root/.bashrc
+
 ADD build .
-ADD src src
-ADD buildroot buildroot
-
-RUN make -j 1 PROJECT=toolchain BUILDROOT=/build/buildroot BR2_EXTERNAL=/build/src
-
-RUN mv out/toolchain/host/usr toolchain
-RUN rm -Rf out src buildroot
-
-RUN echo "export BR2_CCACHE_DIR=/build/cache" >> /root/.bashrc
-RUN echo "export BR2_DL_DIR=/build/dl" >> /root/.bashrc
-RUN echo "export BR2_EXTERNAL=/build/src" >> /root/.bashrc
-RUN echo "export BUILDROOT=/build/buildroot" >> /root/.bashrc
-RUN echo "export TOOLCHAIN=/build/toolchain" >> /root/.bashrc
+ENTRYPOINT ["/build/entrypoint.sh"]
