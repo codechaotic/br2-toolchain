@@ -1,7 +1,3 @@
-dl/
-output/
-cache/
-buildroot/
-hooks/
-src/
-output/
+*
+!output/toolchain/host/usr
+!build

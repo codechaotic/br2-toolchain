@@ -2,7 +2,7 @@
 
 set -e
 
-docker build -t base .
+docker build -t base -f Dockerfile.base .
 docker run --rm -a stdout \
   -v $(pwd)/buildroot:/build/buildroot \
   -v $(pwd)/src:/build/src \
