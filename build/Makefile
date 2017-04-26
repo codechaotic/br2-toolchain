@@ -10,6 +10,7 @@ MAKEARGS += O=$(OUTDIR)/$(PROJECT)
 MAKEARGS += BR2_EXTERNAL_SRC_PATH=$(SRCDIR)
 #transmit project name to be able to use it in kconfig
 MAKEARGS += PROJECT=$(PROJECT)
+MAKEARGS += TOOLCHAIN=$(TOOLCHAIN)
 # location of default defconfig
 DEFCONFIG_FILE=$(SRCDIR)/project/$(PROJECT)/defconfig
 DEFCONFIG := BR2_DEFCONFIG=$(DEFCONFIG_FILE)
@@ -22,14 +23,13 @@ config_change_targets:=menuconfig nconfig xconfig gconfig oldconfig \
        	silentoldconfig randconfig allyesconfig allnoconfig randpackageconfig \
        	allyespackageconfig allnopackageconfig
 
-special_target:=$(config_change_targets) Makefile defconfig savedefconfig %_defconfig
+special_target:=$(config_change_targets) Makefile defconfig savedefconfig
 
 all	:= $(filter-out $(special_target),$(MAKECMDGOALS))
 
 default:
 	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
 	$(MAKE) $(MAKEARGS) $(DEFCONFIG)
-
 
 .PHONY: $(special_target) $(all)
 
@@ -42,13 +42,6 @@ defconfig:
 savedefconfig:
 	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
 	$(MAKE) $(MAKEARGS) $(ALT_DEFCONFIG) savedefconfig
-
-# generate from a defconfig then save as current configuration
-%_defconfig:
-	$(MAKE) $(MAKEARGS) $(DEFCONFIG) $@
-	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
-	$(call UPDATE_DEFCONFIG)
-
 
 # update from current configuration, run the command, then save the result
 $(config_change_targets): $(DEFCONFIG_FILE)
@@ -65,13 +58,3 @@ $(all): _all
 	@:
 
 Makefile:;
-
-$(DEFCONFIG_FILE):
-	$(call UPDATE_DEFCONFIG)
-
-define UPDATE_DEFCONFIG
-	echo 'BR2_GLOBAL_PATCH_DIR="$$(BR2_EXTERNAL_SRC_PATH)/patch"' >> $(DEFCONFIG_FILE)
-	echo 'BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_SRC_PATH)/overlay/$(PROJECT)"'
-	$(MAKE) $(MAKEARGS) $(DEFCONFIG) defconfig
-	$(MAKE) $(MAKEARGS) $(DEFCONFIG) savedefconfig
-endef
