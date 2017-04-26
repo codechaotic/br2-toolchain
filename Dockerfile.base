@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     cpio \
     python \
     rsync \
-    build-essential
+    build-essential \
+ && rm -rf /var/lib/apt/lists/*
 
 ADD build .
 RUN echo "export BR2_CCACHE_DIR=/build/cache" >> /root/.bashrc \
